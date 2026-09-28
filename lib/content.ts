@@ -2,7 +2,7 @@
 import type { ServiceValue } from './inquiry'
 
 const unsplash = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=2400&q=80`
-const local = (id: string) => `/Gemini_Generated_Image_${id}.jfif`
+const local = (id: string) => `/Gemini_Generated_Image_${id}.jpg`
 
 export type Img = { src: string; alt: string }
 
