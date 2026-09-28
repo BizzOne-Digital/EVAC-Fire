@@ -1,0 +1,6 @@
+<!-- Placeholder favicon in brand colours. Replace with an icon cut from the client's final logo. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#0b1117"/>
+  <path d="M14 48V16h24M14 32h18M14 48h24" fill="none" stroke="#f5f1e8" stroke-width="6"/>
+  <path d="M42 40l8-8-8-8" fill="none" stroke="#f45b24" stroke-width="5"/>
+</svg>
