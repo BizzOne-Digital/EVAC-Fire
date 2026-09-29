@@ -32,7 +32,7 @@ export function Footer() {
           <h2 className="footer-title">Contact</h2>
           <ul>
             {phone && <li><a href={`tel:${phone.replace(/[^+\d]/g, '')}`}>{phone}</a></li>}
-            {email && <li><a href={`mailto:${email}`}>{email}</a></li>}
+            {email && <li><a className="footer-email" href={`mailto:${email}`}>{email}</a></li>}
             {address && <li>{address}</li>}
             <li><Link href={contactHref()}>Send an inquiry</Link></li>
             <li className="footer-note">Contact for pricing.</li>

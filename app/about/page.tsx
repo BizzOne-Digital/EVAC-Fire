@@ -20,10 +20,10 @@ export default function About() {
       <Section className="why">
         <div className="shell why-grid">
           <div>
-            <Reveal><Label>{about.whyLabel}</Label></Reveal>
+            <Reveal><Label>{about.whyFire.title}</Label></Reveal>
             <ScrollWords text={about.why} className="why-quote" />
             <Reveal className="why-body" delay={150}>
-              {about.whyBody.map((t, n) => <p key={n}>{t}</p>)}
+              {about.whyFire.body.map((t, n) => <p key={n}>{t}</p>)}
               <p className="why-strong">{about.noShortcuts}</p>
             </Reveal>
           </div>

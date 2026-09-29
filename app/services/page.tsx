@@ -51,12 +51,6 @@ export default function Services() {
                   {s.body.map(t => <p key={t}>{t}</p>)}
                 </Reveal>
 
-                {s.limitation && (
-                  <Reveal as="div" className="notice" delay={100}>
-                    <p><strong className="notice-title">Important Note:</strong> {s.limitation}</p>
-                  </Reveal>
-                )}
-
                 <Reveal delay={150}>
                   <h3 className="svc-list-title">{s.listTitle}</h3>
                   <ul className="svc-list">{s.list.map(item => <li key={item}>{item}</li>)}</ul>

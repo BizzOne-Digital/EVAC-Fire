@@ -37,7 +37,7 @@ export default async function Article({ params }: Props) {
     mainEntityOfPage: `${site.url}${path}`,
     articleSection: post.category,
     author: { '@type': 'Organization', name: site.name, url: site.url },
-    publisher: { '@type': 'Organization', name: site.name, logo: { '@type': 'ImageObject', url: site.logo.src } },
+    publisher: { '@type': 'Organization', name: site.name, logo: { '@type': 'ImageObject', url: `${site.url}${site.logo.src}` } },
     ...(post.published && { datePublished: post.published }),
   }
 

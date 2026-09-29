@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ArrowUpRight } from 'lucide-react'
 import { InquiryForm } from '@/components/inquiry-form'
 import { JsonLd, Label, PageIntro, Reveal, breadcrumbs } from '@/components/ui'
 import { images } from '@/lib/content'
@@ -14,7 +15,6 @@ export const metadata: Metadata = {
 export default async function Contact({ searchParams }: { searchParams: Promise<{ service?: string | string[] }> }) {
   const { service } = await searchParams
   const { phone, email, address } = site.contact
-  const hasDetails = Boolean(phone || email || address)
 
   return (
     <>
@@ -32,10 +32,18 @@ export default async function Contact({ searchParams }: { searchParams: Promise<
               <li><strong>We follow up</strong>We will contact you to clarify what your building needs.</li>
               <li><strong>Contact for pricing</strong>There is no public pricing. Pricing is provided for your specific building and scope.</li>
             </ol>
-            {hasDetails && (
+            {email && (
+              <a className="contact-email" href={`mailto:${email}`}>
+                <span className="contact-email-label">Email us directly</span>
+                <span className="contact-email-address">
+                  {email}
+                  <ArrowUpRight aria-hidden="true" />
+                </span>
+              </a>
+            )}
+            {(phone || address) && (
               <dl className="contact-details">
                 {phone && <><dt>Phone</dt><dd><a href={`tel:${phone.replace(/[^+\d]/g, '')}`}>{phone}</a></dd></>}
-                {email && <><dt>Email</dt><dd><a href={`mailto:${email}`}>{email}</a></dd></>}
                 {address && <><dt>Office</dt><dd>{address}</dd></>}
               </dl>
             )}

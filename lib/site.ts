@@ -20,16 +20,16 @@ export const site = {
    * background. Set it to false for a transparent / reversed version.
    */
   logo: {
-    src: 'https://res.cloudinary.com/difmil8wj/image/upload/v1790485910/bizzone-logos/jmpd85poldolws3jy8xl.png',
-    width: 2172,
-    height: 724,
+    src: '/logo/evac.png',
+    width: 1170,
+    height: 496,
     plate: true,
   },
 
   // Contact details: pending from the client. Leave as null to hide them from the site.
   contact: {
     phone: null as string | null,
-    email: null as string | null,
+    email: 'info@evacfire.ca' as string | null,
     address: null as string | null,
   },
 

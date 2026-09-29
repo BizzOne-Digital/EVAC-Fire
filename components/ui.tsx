@@ -79,7 +79,7 @@ export function Logo() {
   const { logo } = site
   return (
     <span className={logo.plate ? 'brand-plate' : 'brand-mark'}>
-      <Image src={logo.src} alt={site.name} width={logo.width} height={logo.height} sizes="160px" priority />
+      <Image src={logo.src} alt={site.name} width={logo.width} height={logo.height} sizes="200px" priority />
     </span>
   )
 }

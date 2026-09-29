@@ -30,6 +30,16 @@ export const about = {
     'We develop each plan to align with current National and Provincial Fire Code requirements and prepare it to meet the standards of your local fire department.',
   ],
   noShortcuts: 'No generic templates, no shortcuts.',
+  /** About page "Why" section (client copy, Sept 2026). The home page keeps the fields above. */
+  whyFire: {
+    title: 'Why Evac Fire?',
+    body: [
+      'Every plan we create is built for the moment you need to evacuate — clear language, visual layouts, and procedures your staff can actually remember under pressure.',
+      'We develop each plan to align with current National and Provincial Fire Code requirements and prepare it to meet the standards of your local fire department and your Authority Having Jurisdiction.',
+      'Founded on the people side of fire safety, Evac Fire brings over 18 years of combined experience across fire service and fire protection. Our approach combines front-line operational experience with fire protection engineering best practices, backed by professional certification.',
+      'Our clients rely on us for practical plans that are usable in an emergency, clear communication, flexible scheduling, and ongoing support as buildings, staff, and requirements change.',
+    ],
+  },
   missionLead: 'Our mission is simple:',
   mission: 'help buildings meet requirements and help people get out safely when every second counts.',
 }
@@ -78,7 +88,6 @@ export type Service = {
   list: string[]
   cta: string
   image: Img
-  limitation?: string
   /** Copy shown after the list. */
   closing?: string
 }
@@ -159,8 +168,6 @@ export const services: Service[] = [
       'Emergency lighting and exit signs — how to perform functional checks and identify deficiencies',
       'Post-emergency procedures',
     ],
-    limitation:
-      'This training covers how your staff should perform routine checks and identify issues. We do not provide licensed inspection, testing, or maintenance of fire extinguishers, fire alarm systems, or emergency lighting as a standalone service.',
     closing: 'Training is tailored to your organization and can be delivered online or in person as an optional, standalone service.',
     cta: 'Book fire safety training',
     image: { src: local('1d0tqz1d0tqz1d0t'), alt: 'Instructor demonstrating a fire extinguisher to a group of staff' },

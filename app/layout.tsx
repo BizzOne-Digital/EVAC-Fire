@@ -30,7 +30,7 @@ const organization = {
   '@type': 'Organization',
   name: site.name,
   url: site.url,
-  logo: site.logo.src,
+  logo: `${site.url}${site.logo.src}`,
   slogan: site.tagline,
   description: site.description,
   knowsAbout: ['Fire safety plans', 'Fire drills', 'Fire safety training', 'Emergency preparedness'],
