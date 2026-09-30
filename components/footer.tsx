@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { services } from '@/lib/content'
-import { contactHref, site } from '@/lib/site'
+import { contactHref, site, telHref } from '@/lib/site'
 import { ButtonLink, Label, Lines, Logo, Reveal } from './ui'
 
 export function Footer() {
-  const { phone, email, address } = site.contact
+  const { phones, email, address } = site.contact
   return (
     <footer className="site-footer tone-dark">
       <div className="shell footer-top">
@@ -31,7 +31,7 @@ export function Footer() {
         <div style={{ '--i': 3 } as React.CSSProperties}>
           <h2 className="footer-title">Contact</h2>
           <ul>
-            {phone && <li><a href={`tel:${phone.replace(/[^+\d]/g, '')}`}>{phone}</a></li>}
+            {phones.map(p => <li key={p}><a className="footer-email" href={telHref(p)}>{p}</a></li>)}
             {email && <li><a className="footer-email" href={`mailto:${email}`}>{email}</a></li>}
             {address && <li>{address}</li>}
             <li><Link href={contactHref()}>Send an inquiry</Link></li>

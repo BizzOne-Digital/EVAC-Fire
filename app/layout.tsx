@@ -6,7 +6,7 @@ import { Header } from '@/components/header'
 import { RevealObserver } from '@/components/reveal-observer'
 import { Splash, introScript } from '@/components/splash'
 import { JsonLd } from '@/components/ui'
-import { site } from '@/lib/site'
+import { site, telHref } from '@/lib/site'
 import './globals.css'
 
 const display = Archivo({ subsets: ['latin'], axes: ['wdth'], variable: '--font-display', display: 'swap' })
@@ -32,6 +32,8 @@ const organization = {
   url: site.url,
   logo: `${site.url}${site.logo.src}`,
   slogan: site.tagline,
+  telephone: site.contact.phones.map(p => telHref(p).slice(4)),
+  email: site.contact.email,
   description: site.description,
   knowsAbout: ['Fire safety plans', 'Fire drills', 'Fire safety training', 'Emergency preparedness'],
 }

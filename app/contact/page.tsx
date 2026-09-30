@@ -4,7 +4,7 @@ import { InquiryForm } from '@/components/inquiry-form'
 import { JsonLd, Label, PageIntro, Reveal, breadcrumbs } from '@/components/ui'
 import { images } from '@/lib/content'
 import { serviceFromParam } from '@/lib/inquiry'
-import { site } from '@/lib/site'
+import { site, telHref } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default async function Contact({ searchParams }: { searchParams: Promise<{ service?: string | string[] }> }) {
   const { service } = await searchParams
-  const { phone, email, address } = site.contact
+  const { phones, email, address } = site.contact
 
   return (
     <>
@@ -32,6 +32,15 @@ export default async function Contact({ searchParams }: { searchParams: Promise<
               <li><strong>We follow up</strong>We will contact you to clarify what your building needs.</li>
               <li><strong>Contact for pricing</strong>There is no public pricing. Pricing is provided for your specific building and scope.</li>
             </ol>
+            {phones.map((p, i) => (
+              <a key={p} className="contact-email" href={telHref(p)}>
+                <span className="contact-email-label">{i === 0 ? 'Call us' : 'Or call'}</span>
+                <span className="contact-email-address">
+                  {p}
+                  <ArrowUpRight aria-hidden="true" />
+                </span>
+              </a>
+            ))}
             {email && (
               <a className="contact-email" href={`mailto:${email}`}>
                 <span className="contact-email-label">Email us directly</span>
@@ -41,10 +50,9 @@ export default async function Contact({ searchParams }: { searchParams: Promise<
                 </span>
               </a>
             )}
-            {(phone || address) && (
+            {address && (
               <dl className="contact-details">
-                {phone && <><dt>Phone</dt><dd><a href={`tel:${phone.replace(/[^+\d]/g, '')}`}>{phone}</a></dd></>}
-                {address && <><dt>Office</dt><dd>{address}</dd></>}
+                <dt>Office</dt><dd>{address}</dd>
               </dl>
             )}
           </Reveal>

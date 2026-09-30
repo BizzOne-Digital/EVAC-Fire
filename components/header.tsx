@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
-import { contactHref, site } from '@/lib/site'
+import { contactHref, site, telHref } from '@/lib/site'
 import { Logo } from './ui'
 
 const isActive = (pathname: string, href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
@@ -71,6 +71,7 @@ export function Header() {
             <span>Request a consultation</span>
             <ArrowUpRight size={18} aria-hidden="true" />
           </Link>
+          {site.contact.phones.map(p => <a key={p} className="menu-phone" href={telHref(p)}>{p}</a>)}
           <p>{site.tagline}</p>
         </div>
       </dialog>

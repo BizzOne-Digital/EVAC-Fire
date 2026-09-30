@@ -552,6 +552,8 @@ html:has(.menu[open]) { overflow: hidden; }
   letter-spacing: -0.01em; line-height: 1.1; overflow-wrap: anywhere;
 }
 .contact-email-address svg { flex: none; width: 26px; height: 26px; color: var(--orange); transition: transform 0.5s var(--ease); }
+.contact-email + .contact-email { margin-top: 12px; }
+.menu-phone { font-family: var(--display); font-stretch: 88%; font-size: 1.5rem; font-weight: 650; color: var(--ivory); }
 .contact-email:hover { background: var(--charcoal); }
 .contact-email:hover::before, .contact-email:focus-visible::before { transform: scaleX(1); }
 .contact-email:hover svg, .contact-email:focus-visible svg { transform: translate(4px, -4px); }
