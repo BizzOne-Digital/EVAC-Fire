@@ -84,8 +84,8 @@ export type Service = {
   lead: string
   summary: string
   body: string[]
-  listTitle: string
-  list: string[]
+  listTitle?: string
+  list?: string[]
   cta: string
   image: Img
   /** Copy shown after the list. */
@@ -173,8 +173,28 @@ export const services: Service[] = [
     image: { src: local('1d0tqz1d0tqz1d0t'), alt: 'Instructor demonstrating a fire extinguisher to a group of staff' },
   },
   {
-    slug: 'expert-consultation',
+    slug: 'routine-inspections',
     number: '04',
+    title: 'Routine Inspections',
+    lead: 'Stay Ready. Stay Documented.',
+    summary: 'Scheduled monthly and annual inspections of your key fire safety systems.',
+    body: ['EVAC FIRE offers scheduled monthly and annual routine inspections of your key fire safety systems.'],
+    listTitle: 'Our inspections include:',
+    list: [
+      'Fire extinguishers',
+      'Emergency and exit lighting',
+      'Fire alarm systems',
+      'Early identification of deficiencies to help you maintain readiness',
+      'Records to support review by your Authority Having Jurisdiction',
+      'Clear documentation and reporting of any issues requiring service or replacement',
+      'All work performed by fully qualified and certified personnel',
+    ],
+    cta: 'Book a routine inspection',
+    image: { src: unsplash('1595306394931-b35768661692'), alt: 'Fire extinguisher mounted on a wall' },
+  },
+  {
+    slug: 'expert-consultation',
+    number: '05',
     title: 'Expert Consultation',
     lead: 'Clear guidance for your next step.',
     summary: 'Plain-language guidance on planning, updates, and preparing for inspections.',

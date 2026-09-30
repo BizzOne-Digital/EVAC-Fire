@@ -51,11 +51,13 @@ export default function Services() {
                   {s.body.map(t => <p key={t}>{t}</p>)}
                 </Reveal>
 
-                <Reveal delay={150}>
-                  <h3 className="svc-list-title">{s.listTitle}</h3>
-                  <ul className="svc-list">{s.list.map(item => <li key={item}>{item}</li>)}</ul>
-                  {s.closing && <p className="svc-closing">{s.closing}</p>}
-                </Reveal>
+                {s.list && (
+                  <Reveal delay={150}>
+                    <h3 className="svc-list-title">{s.listTitle}</h3>
+                    <ul className="svc-list">{s.list.map(item => <li key={item}>{item}</li>)}</ul>
+                    {s.closing && <p className="svc-closing">{s.closing}</p>}
+                  </Reveal>
+                )}
 
                 <Reveal className="svc-cta" delay={200}>
                   <ButtonLink href={contactHref(s.slug)}>{s.cta}</ButtonLink>

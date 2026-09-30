@@ -5,6 +5,7 @@ export const SERVICE_OPTIONS = [
   { value: 'fire-safety-plan', label: 'Fire Safety Plan' },
   { value: 'fire-drill', label: 'Fire Drill' },
   { value: 'fire-safety-training', label: 'Fire Safety Training' },
+  { value: 'routine-inspections', label: 'Routine Inspections' },
   { value: 'expert-consultation', label: 'Expert Consultation' },
   { value: 'not-sure', label: 'Not sure yet — help me choose' },
 ] as const
