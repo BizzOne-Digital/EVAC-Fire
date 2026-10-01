@@ -360,6 +360,18 @@ html:has(.menu[open]) { overflow: hidden; }
 .hero-index a:hover, .hero-index a:focus-visible { color: var(--ivory); }
 .hero-index a:hover::before, .hero-index a:focus-visible::before { transform: scaleX(1); }
 
+/* Service area band, directly under the hero */
+.service-area { padding-block: clamp(40px, 5vw, 64px); border-top: 1px solid var(--line); }
+.area-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px 64px; flex-wrap: wrap; }
+.area-inner .label { margin-bottom: 14px; }
+.area-title { font-size: clamp(1.75rem, 3.2vw, 2.75rem); font-stretch: 88%; line-height: 1.05; }
+.area-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+.area-list li {
+  display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 22px;
+  border: 1px solid var(--line); font-family: var(--display); font-stretch: 88%; font-size: 1.15rem; font-weight: 600;
+}
+.area-list svg { flex: none; width: 20px; height: 20px; color: var(--orange); }
+
 /* ============================================================
    Page intro
    ============================================================ */

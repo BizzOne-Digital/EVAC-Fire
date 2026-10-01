@@ -34,6 +34,7 @@ const organization = {
   slogan: site.tagline,
   telephone: site.contact.phones.map(p => telHref(p).slice(4)),
   email: site.contact.email,
+  areaServed: site.serviceAreas.map(name => ({ '@type': 'AdministrativeArea', name })),
   description: site.description,
   knowsAbout: ['Fire safety plans', 'Fire drills', 'Fire safety training', 'Emergency preparedness'],
 }

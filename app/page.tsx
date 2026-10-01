@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { CSSProperties } from 'react'
+import { MapPin } from 'lucide-react'
 import { AudienceIndex, ProcessRoute, ServiceIndex } from '@/components/sections'
 import { ArrowLink, ButtonLink, ClosingCTA, Label, Lines, Media, Reveal, ScrollWords, Section } from '@/components/ui'
 import { about, approach, images, services, servicesIntro } from '@/lib/content'
@@ -35,6 +36,23 @@ export default function Home() {
             </Link>
           ))}
         </nav>
+      </section>
+
+      <section className="service-area tone-charcoal" aria-labelledby="area-title">
+        <div className="shell area-inner">
+          <Reveal>
+            <Label>Service area</Label>
+            <h2 id="area-title" className="area-title">Serving the <em>Ottawa Region</em> and the <em>GTA</em>.</h2>
+          </Reveal>
+          <Reveal as="ul" kind="stagger" className="area-list">
+            {site.serviceAreas.map((area, n) => (
+              <li key={area} style={{ '--i': n } as CSSProperties}>
+                <MapPin aria-hidden="true" />
+                {area}
+              </li>
+            ))}
+          </Reveal>
+        </div>
       </section>
 
       <Section className="intro">

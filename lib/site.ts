@@ -26,6 +26,8 @@ export const site = {
     plate: true,
   },
 
+  serviceAreas: ['Ottawa Region', 'Greater Toronto Area (GTA)'],
+
   // Contact details: pending from the client. Leave as null to hide them from the site.
   contact: {
     /** Each number is listed separately; letters dial via the phone keypad. */
