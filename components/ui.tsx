@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import type { CSSProperties, ReactNode } from 'react'
+import { Fragment, type CSSProperties, type ReactNode } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { contactHref, site } from '@/lib/site'
-import type { Img } from '@/lib/content'
+import { getDoc, type Img } from '@/lib/cms'
+import { parseMarkup, siteUrl } from '@/lib/site'
 
 type Tone = 'light' | 'dark' | 'charcoal'
 const vars = (v: Record<string, string | number>) => v as CSSProperties
@@ -75,14 +75,12 @@ export function ScrollWords({ text, className }: { text: string; className?: str
   )
 }
 
-export function Logo() {
-  const { logo } = site
-  return (
-    <span className={logo.plate ? 'brand-plate' : 'brand-mark'}>
-      <Image src={logo.src} alt={site.name} width={logo.width} height={logo.height} sizes="200px" priority />
-    </span>
-  )
-}
+/** CMS heading markup (one line per row, *highlight*) as lines for <Lines>. */
+export const rich = (text: string): ReactNode[] =>
+  parseMarkup(text).map((parts, i) => <Fragment key={i}>{parts.map((p, j) => (p.em ? <em key={j}>{p.text}</em> : p.text))}</Fragment>)
+
+/** Single-line CMS markup, e.g. "Serving the *Ottawa Region*". */
+export const inline = (text: string) => rich(text.replace(/\s*\n\s*/g, ' '))
 
 export function PageIntro({ label, lines, children, image }: { label: string; lines: ReactNode[]; children?: ReactNode; image?: Img }) {
   return (
@@ -110,18 +108,20 @@ export function Section({ tone = 'light', className, children, id, labelledBy }:
   )
 }
 
-export function ClosingCTA() {
+export async function ClosingCTA() {
+  const { closing } = await getDoc('ctas')
+  if (!closing.enabled) return null
   return (
     <Section className="closing">
       <div className="shell closing-inner">
         <div>
-          <Reveal><Label>Take the next step</Label></Reveal>
-          <Lines lines={['Tell us about', <>your <em>building.</em></>]} />
+          <Reveal><Label>{closing.label}</Label></Reveal>
+          <Lines lines={rich(closing.title)} />
         </div>
         <Reveal className="closing-copy" delay={150}>
-          <p>Share your building type and what you need: a fire safety plan, a fire drill, fire safety training, or expert consultation. There is no public pricing. Contact us for pricing tailored to your building.</p>
+          {closing.text && <p>{closing.text}</p>}
           <div className="closing-actions">
-            <ButtonLink href={contactHref()}>Contact for pricing</ButtonLink>
+            <ButtonLink href={closing.cta.href}>{closing.cta.label}</ButtonLink>
           </div>
         </Reveal>
       </div>
@@ -140,6 +140,6 @@ export const breadcrumbs = (items: [name: string, path: string][]) => ({
     '@type': 'ListItem',
     position: i + 1,
     name,
-    item: `${site.url}${path}`,
+    item: `${siteUrl()}${path}`,
   })),
 })

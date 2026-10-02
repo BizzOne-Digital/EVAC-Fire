@@ -2,12 +2,14 @@
 
 import { useActionState, useEffect, useRef, type ReactNode } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { submitInquiry } from '@/app/contact/actions'
-import { PROPERTY_TYPES, SERVICE_OPTIONS, type InquiryField, type InquiryState } from '@/lib/inquiry'
+import { submitInquiry } from '@/app/(site)/contact/actions'
+import { PROPERTY_TYPES, type InquiryField, type InquiryState, type ServiceOption } from '@/lib/inquiry'
 
 const initial: InquiryState = { status: 'idle' }
 
-export function InquiryForm({ defaultService, startedAt }: { defaultService: string; startedAt: number }) {
+type Props = { options: ServiceOption[]; defaultService: string; startedAt: number; note: string; success: { title: string; text: string } }
+
+export function InquiryForm({ options, defaultService, startedAt, note, success }: Props) {
   const [state, action, pending] = useActionState(submitInquiry, initial)
   const statusRef = useRef<HTMLDivElement>(null)
 
@@ -19,8 +21,8 @@ export function InquiryForm({ defaultService, startedAt }: { defaultService: str
     return (
       <div className="form-success" role="status" tabIndex={-1} ref={statusRef}>
         <span className="form-success-mark" aria-hidden="true" />
-        <h2>Thank you. Your inquiry has been sent.</h2>
-        <p>EVAC Fire &amp; Safety will follow up using the contact details you provided.</p>
+        <h2>{success.title}</h2>
+        {success.text && <p>{success.text}</p>}
       </div>
     )
   }
@@ -66,7 +68,7 @@ export function InquiryForm({ defaultService, startedAt }: { defaultService: str
         <Field name="service" label="Service of interest" error={err.service}>
           <select {...field('service')} required>
             <option value="" disabled>Select a service</option>
-            {SERVICE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+            {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
         </Field>
       </div>
@@ -85,7 +87,7 @@ export function InquiryForm({ defaultService, startedAt }: { defaultService: str
           <span>{pending ? 'Sending…' : 'Send inquiry'}</span>
           <ArrowUpRight size={18} aria-hidden="true" />
         </button>
-        <p className="form-note">Contact for pricing.</p>
+        {note && <p className="form-note">{note}</p>}
       </div>
     </form>
   )

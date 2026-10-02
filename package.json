@@ -8,14 +8,18 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "node --test lib/*.test.ts"
+    "test": "node --test lib/inquiry.test.ts lib/site.test.ts lib/cms-schema.test.ts",
+    "seed": "node --env-file-if-exists=.env.local scripts/seed.ts",
+    "check": "node --env-file-if-exists=.env.local scripts/check.ts"
   },
   "dependencies": {
     "@vercel/analytics": "1.6.1",
     "lucide-react": "^1.16.0",
+    "mongodb": "^7.7.0",
     "next": "16.3.3",
     "react": "^19",
-    "react-dom": "^19"
+    "react-dom": "^19",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
@@ -25,5 +29,9 @@
     "postcss": "^8.5",
     "tailwindcss": "^4.3.3",
     "typescript": "5.7.3"
-  }
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "type": "module"
 }

@@ -4,12 +4,15 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
-import { contactHref, site, telHref } from '@/lib/site'
-import { Logo } from './ui'
+import { telHref } from '@/lib/site'
+import { Logo, type LogoData } from './logo'
+
+type NavLink = { label: string; href: string }
+type Props = { name: string; tagline: string; logo: LogoData; nav: NavLink[]; phones: string[]; cta: NavLink }
 
 const isActive = (pathname: string, href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
 
-export function Header() {
+export function Header({ name, tagline, logo, nav, phones, cta }: Props) {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const menu = useRef<HTMLDialogElement>(null)
@@ -27,18 +30,18 @@ export function Header() {
   return (
     <header className="site-header" data-scrolled={scrolled}>
       <div className="shell header-inner">
-        <Link href="/" className="brand" aria-label={`${site.name} home`}>
-          <Logo />
+        <Link href="/" className="brand" aria-label={`${name} home`}>
+          <Logo logo={logo} name={name} />
         </Link>
         <nav className="desktop-nav" aria-label="Main">
-          {site.nav.map(item => (
+          {nav.map(item => (
             <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? 'page' : undefined}>
               {item.label}
             </Link>
           ))}
         </nav>
-        <Link href={contactHref()} className="btn btn--sm header-cta">
-          <span>Request a consultation</span>
+        <Link href={cta.href} className="btn btn--sm header-cta">
+          <span>{cta.label}</span>
           <ArrowUpRight size={16} aria-hidden="true" />
         </Link>
         <button type="button" className="menu-button" aria-haspopup="dialog" onClick={() => menu.current?.showModal()}>
@@ -49,8 +52,8 @@ export function Header() {
 
       <dialog ref={menu} className="menu tone-dark" aria-label="Menu">
         <div className="shell menu-top">
-          <Link href="/" className="brand" aria-label={`${site.name} home`}>
-            <Logo />
+          <Link href="/" className="brand" aria-label={`${name} home`}>
+            <Logo logo={logo} name={name} />
           </Link>
           <button type="button" className="menu-button" onClick={() => menu.current?.close()} autoFocus>
             <X aria-hidden="true" />
@@ -58,7 +61,7 @@ export function Header() {
           </button>
         </div>
         <nav className="shell menu-nav" aria-label="Mobile">
-          {site.nav.map((item, i) => (
+          {nav.map((item, i) => (
             <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? 'page' : undefined} style={{ '--i': i } as CSSProperties} onClick={() => menu.current?.close()}>
               <span className="menu-num" aria-hidden="true">0{i + 1}</span>
               {item.label}
@@ -67,12 +70,12 @@ export function Header() {
           ))}
         </nav>
         <div className="shell menu-foot">
-          <Link href={contactHref()} className="btn" onClick={() => menu.current?.close()}>
-            <span>Request a consultation</span>
+          <Link href={cta.href} className="btn" onClick={() => menu.current?.close()}>
+            <span>{cta.label}</span>
             <ArrowUpRight size={18} aria-hidden="true" />
           </Link>
-          {site.contact.phones.map(p => <a key={p} className="menu-phone" href={telHref(p)}>{p}</a>)}
-          <p>{site.tagline}</p>
+          {phones.map(p => <a key={p} className="menu-phone" href={telHref(p)}>{p}</a>)}
+          <p>{tagline}</p>
         </div>
       </dialog>
     </header>

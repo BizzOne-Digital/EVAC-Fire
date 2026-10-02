@@ -1,10 +1,11 @@
-import { ButtonLink, PageIntro } from '@/components/ui'
+import Link from 'next/link'
 
+// Outside the public site (e.g. unknown /admin URLs). Public 404s use app/(site)/not-found.tsx.
 export default function NotFound() {
   return (
-    <PageIntro label="Page not found" lines={['This route', <>doesn&apos;t <em>exist.</em></>]}>
-      <p>The page you are looking for may have moved. Use the navigation, or head back to the homepage.</p>
-      <div className="page-intro-actions"><ButtonLink href="/">Back to home</ButtonLink></div>
-    </PageIntro>
+    <main style={{ minHeight: '100vh', display: 'grid', placeContent: 'center', gap: 16, padding: 24, textAlign: 'center' }}>
+      <h1 style={{ margin: 0 }}>Page not found</h1>
+      <p style={{ margin: 0 }}><Link href="/">Back to the website</Link> · <Link href="/admin">Admin dashboard</Link></p>
+    </main>
   )
 }
