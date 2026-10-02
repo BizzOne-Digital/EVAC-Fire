@@ -85,7 +85,7 @@ const g = globalThis as unknown as { evacMongo?: Promise<MongoClient> }
 /** One client per server instance, reused across hot reloads and warm serverless invocations. */
 export function client() {
   const uri = process.env.MONGODB_URI
-  if (!uri) throw new Error('MONGODB_URI is not set. See .env.example.')
+  if (!uri) throw new Error('MONGODB_URI is not set. Locally: add it to .env.local. On Vercel: Project Settings > Environment Variables, then redeploy.')
   return (g.evacMongo ??= new MongoClient(uri, { maxPoolSize: 10, appName: 'evac-website' }).connect())
 }
 
