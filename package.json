@@ -1,0 +1,40 @@
+{
+  "name": "evac-fire-and-safety-website",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@12.3.4",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test lib/inquiry.test.ts lib/site.test.ts lib/cms-schema.test.ts",
+    "seed": "node --env-file-if-exists=.env.local scripts/seed.ts",
+    "check": "node --env-file-if-exists=.env.local scripts/check.ts"
+  },
+  "dependencies": {
+    "@vercel/analytics": "1.6.1",
+    "lucide-react": "^1.16.0",
+    "mongodb": "^7.7.0",
+    "next": "16.3.3",
+    "nodemailer": "^10.1.0",
+    "react": "^19",
+    "react-dom": "^19",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "postcss": "^8.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "5.7.3"
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "type": "module"
+}
