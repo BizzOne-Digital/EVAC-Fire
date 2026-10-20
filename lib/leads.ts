@@ -33,4 +33,5 @@ export async function emailLead(lead: Lead) {
     subject: `New inquiry from ${lead.name}${lead.organization ? ` (${lead.organization})` : ''}`,
     text: rows.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join('\n'),
   })
+  console.log(`[smtp] sent ${info.messageId} to ${info.accepted.join(', ')} (rejected: ${info.rejected.join(', ') || 'none'})`)
 }
