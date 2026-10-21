@@ -16,16 +16,18 @@ export async function deliverLead(lead: Lead) {
   if (!res.ok) throw new Error(`Lead webhook responded ${res.status}`)
 }
 
-/** Emails each new inquiry via Gmail SMTP when SMTP_USER and SMTP_PASS are set. Server-only. */
+/** Emails each new inquiry via SMTP (default Microsoft 365) when SMTP_USER and SMTP_PASS are set. Server-only. */
 export async function emailLead(lead: Lead) {
-  const { SMTP_USER, SMTP_PASS, LEAD_EMAIL_TO } = process.env
-  const transport = nodemailer.createTransport({ host: 'smtp.gmail.com', port: 465, secure: true, auth: { user: SMTP_USER, pass: SMTP_PASS } })
+  const { SMTP_USER, SMTP_PASS, LEAD_EMAIL_TO, SMTP_HOST = 'smtp.office365.com' } = process.env
+  const port = Number(process.env.SMTP_PORT || 587)
+  // 465 = implicit TLS; 587 = STARTTLS (required by Microsoft 365)
+  const transport = nodemailer.createTransport({ host: SMTP_HOST, port, secure: port === 465, requireTLS: port !== 465, auth: { user: SMTP_USER, pass: SMTP_PASS } })
   const rows: [string, string][] = [
     ['Name', lead.name], ['Organization', lead.organization], ['Email', lead.email], ['Phone', lead.phone],
     ['Property type', lead.propertyType], ['Service', lead.serviceLabel], ['Message', lead.message], ['Submitted', lead.submittedAt],
   ]
-  await transport.verify() // throws with Gmail's reason on bad host/auth
-  console.log(`[smtp] connected to smtp.gmail.com:465 as ${SMTP_USER}`)
+  await transport.verify() // throws with the server's reason on bad host/auth
+  console.log(`[smtp] connected to ${SMTP_HOST}:${port} as ${SMTP_USER}`)
   const info = await transport.sendMail({
     from: `"Website Inquiry" <${SMTP_USER}>`,
     to: LEAD_EMAIL_TO || SMTP_USER,
