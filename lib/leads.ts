@@ -16,24 +16,42 @@ export async function deliverLead(lead: Lead) {
   if (!res.ok) throw new Error(`Lead webhook responded ${res.status}`)
 }
 
-/** Emails each new inquiry via SMTP (default Microsoft 365) when SMTP_USER and SMTP_PASS are set. Server-only. */
+/**
+ * Emails each new inquiry through Gmail SMTP (smtp.gmail.com:465, SSL) when SMTP_USER and SMTP_PASS are set. Server-only.
+ * SMTP_USER is the Gmail / Google Workspace address; SMTP_PASS is a 16-character App Password
+ * (Google Account > Security > 2-Step Verification > App passwords), not the normal account password.
+ */
 export async function emailLead(lead: Lead) {
-  const { SMTP_USER, SMTP_PASS, LEAD_EMAIL_TO, SMTP_HOST = 'smtp.office365.com' } = process.env
-  const port = Number(process.env.SMTP_PORT || 587)
-  // 465 = implicit TLS; 587 = STARTTLS (required by Microsoft 365)
-  const transport = nodemailer.createTransport({ host: SMTP_HOST, port, secure: port === 465, requireTLS: port !== 465, auth: { user: SMTP_USER, pass: SMTP_PASS } })
+  const { LEAD_EMAIL_TO } = process.env
+  const SMTP_USER = process.env.SMTP_USER!.trim()
+  const SMTP_PASS = process.env.SMTP_PASS!.replace(/\s+/g, '') // Google shows app passwords in groups of four
+  const transport = nodemailer.createTransport({ service: 'gmail', auth: { user: SMTP_USER, pass: SMTP_PASS } })
   const rows: [string, string][] = [
     ['Name', lead.name], ['Organization', lead.organization], ['Email', lead.email], ['Phone', lead.phone],
     ['Property type', lead.propertyType], ['Service', lead.serviceLabel], ['Message', lead.message], ['Submitted', lead.submittedAt],
   ]
-  await transport.verify() // throws with the server's reason on bad host/auth
-  console.log(`[smtp] connected to ${SMTP_HOST}:${port} as ${SMTP_USER}`)
-  const info = await transport.sendMail({
-    from: `"Website Inquiry" <${SMTP_USER}>`,
-    to: LEAD_EMAIL_TO || SMTP_USER,
-    replyTo: lead.email,
-    subject: `New inquiry from ${lead.name}${lead.organization ? ` (${lead.organization})` : ''}`,
-    text: rows.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join('\n'),
-  })
-  console.log(`[smtp] sent ${info.messageId} to ${info.accepted.join(', ')} (rejected: ${info.rejected.join(', ') || 'none'})`)
+  const to = LEAD_EMAIL_TO || SMTP_USER
+  const t0 = Date.now()
+  console.log(`[smtp] sending inquiry from ${lead.email} to ${to} via Gmail as ${SMTP_USER}`)
+  try {
+    await transport.verify() // throws with Gmail's reason on a bad login
+    console.log(`[smtp] connected to Gmail (${Date.now() - t0} ms)`)
+    const info = await transport.sendMail({
+      from: `"Website Inquiry" <${SMTP_USER}>`,
+      to,
+      replyTo: lead.email,
+      subject: `New inquiry from ${lead.name}${lead.organization ? ` (${lead.organization})` : ''}`,
+      text: rows.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join('\n'),
+    })
+    console.log(`[smtp] ✓ email sent in ${Date.now() - t0} ms: id=${info.messageId} accepted=${info.accepted.join(', ') || 'none'} rejected=${info.rejected.join(', ') || 'none'} response="${info.response}"`)
+  } catch (err) {
+    const e = err as { code?: string; responseCode?: number; response?: string; message?: string }
+    const hint =
+      e.code === 'EAUTH' || e.responseCode === 535 ? 'Gmail rejected the login: SMTP_PASS must be a 16-character App Password (2-Step Verification on), not the account password.'
+      : e.code === 'ETIMEDOUT' || e.code === 'ECONNECTION' || e.code === 'ESOCKET' ? 'Could not reach smtp.gmail.com:465 (network or firewall).'
+      : e.responseCode === 550 || e.responseCode === 553 ? 'Recipient was rejected: check LEAD_EMAIL_TO.'
+      : 'See the Gmail response.'
+    console.error(`[smtp] ✗ email FAILED after ${Date.now() - t0} ms: code=${e.code ?? '-'} status=${e.responseCode ?? '-'} response="${e.response ?? e.message}" → ${hint}`)
+    throw err
+  }
 }
